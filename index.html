@@ -20,6 +20,22 @@
     
   </head>
   <body>
+    <!-- USEFUL LINKS -->
+    <!-- http://stackoverflow.com/questions/17386993/twitters-bootstrap-dropdowns-with-click-event -->
+    <!-- http://www.roytuts.com/infinite-dynamic-multi-level-nested-category-with-php-and-mysql/ -->
+    <script>
+    (function($){
+        $(document).ready(function(){
+            $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+                event.preventDefault(); 
+                event.stopPropagation(); 
+                $(this).parent().siblings().removeClass('open');
+                $(this).parent().toggleClass('open');
+            });
+        });
+    })(jQuery);
+
+    </script>
     <div class="container">
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -39,18 +55,24 @@
           <ul class="nav navbar-nav">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutorials <span class="caret"></span></a>
-              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                 <h6 class="dropdown-header">Fundamentals</h6>
                 <li class="dropdown-submenu">
-                  <a href="#">Algorithms</a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Algorithms</a>
                   <ul class="dropdown-menu">
                     <li><a href="#">Sorting</a></li>
-                    <li><a href="#">Computing</a></li>
+                    <li class="dropdown dropdown-submenu">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Computing</a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">Fibonacci</a></li>
+                        <li><a href="#">3sum</a></li>
+                      </ul>
+                    </li>
                   </ul>
                 </li>
                 <li><a href="#">Data Structures</a></li>
-                <li class="dropdown-submenu">
-                  <a href="#">Interview Questions</a>
+                <li class="dropdown dropdown-submenu">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Interview Questions</a>
                   <ul class="dropdown-menu">
                     <li><a href="#">Behavioral</a></li>
                     <li><a href="#">Technical</a></li>
