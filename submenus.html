@@ -18,11 +18,29 @@
 
   </head>
   <body>
-
     <!-- USEFUL LINKS -->
     <!-- http://stackoverflow.com/questions/17386993/twitters-bootstrap-dropdowns-with-click-event -->
     <!-- http://www.roytuts.com/infinite-dynamic-multi-level-nested-category-with-php-and-mysql/ -->
-
+    <script>
+    (function($){
+        $(document).ready(function(){
+            $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                $(this).parent().siblings().removeClass('open');
+                $(this).parent().toggleClass('open');
+            });
+        });
+    })(jQuery);
+    </script>
+    <style>
+      .marginBottom-0 {margin-bottom:0;}
+      .dropdown-submenu{position:relative;}
+      .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+      .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+      .dropdown-submenu:hover>a:after{border-left-color:#555;}
+      .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+    </style>
     <div class="container">
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -44,9 +62,27 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutorials <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                 <h6 class="dropdown-header">Fundamentals</h6>
-                <li><a href="#">Algorithms</a></li>
+                <li class="dropdown-submenu">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Algorithms</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Sorting</a></li>
+                    <li class="dropdown dropdown-submenu">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Computing</a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">Fibonacci</a></li>
+                        <li><a href="#">3sum</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
                 <li><a href="#">Data Structures</a></li>
-                <li><a href="#">Interview Questions</a></li>
+                <li class="dropdown dropdown-submenu">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Interview Questions</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Behavioral</a></li>
+                    <li><a href="#">Technical</a></li>
+                  </ul>
+                </li>
                 <li role="separator" class="divider"></li>
                 <h6 class="dropdown-header">Languages</h6>
                 <li><a href="#">Java</a></li>
