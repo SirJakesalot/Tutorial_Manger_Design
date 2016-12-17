@@ -9,17 +9,29 @@
 
     <!-- JAVASCRIPT LIBRARIES -->
     <!-- jquery -->
-    <script src="vendors/jquery/jquery.min.js"></script>
+    <script src="../vendors/jquery/jquery.min.js"></script>
     <!-- bootstrap -->
-    <script src="vendors/bootstrap/bootstrap-dist.min.js"></script>
+    <script src="../vendors/bootstrap/bootstrap-dist.min.js"></script>
     <!-- local datasource -->
-    <script src="js/datasource.js"></script>
+    <script src="../js/datasource.js"></script>
 
     <!-- CSS LIBRARIES -->
     <!-- bootstrap -->
-    <link rel="stylesheet" href="vendors/bootstrap/bootstrap-dist.min.css">
-    <link rel="stylesheet" href="vendors/bootstrap/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../vendors/bootstrap/bootstrap-dist.min.css">
+    <link rel="stylesheet" href="../vendors/bootstrap/bootstrap-theme.min.css">
   </head>
+  <style>
+    .page {
+      width: 840px;
+      margin: 20px auto;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    }
+    .content {
+      padding: 10px;
+    }
+  </style>
 
   <body>
 
@@ -38,7 +50,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="">Jake's Tutorials</a>
+          <a class="navbar-brand" href="../">Jake's Tutorials</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,7 +60,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutorials <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                 <h6 class="dropdown-header">Fundamentals</h6>
-                <li><a href="algorithms/">Algorithms</a></li>
+                <li><a href="">Algorithms</a></li>
                 <li><a href="#">Data Structures</a></li>
                 <li><a href="#">Interview Questions</a></li>
                 <li role="separator" class="divider"></li>
@@ -76,7 +88,7 @@
                 <li><a href="#">Delete Category</a></li>
               </ul>
             </li>
-            <li><a href="tutorial-files.html">Manage Tutorial Files</a></li>
+            <li><a href="#">Manage Tutorial Files</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -85,7 +97,34 @@
       <div class="row">
         <div class="col-sm-1">ads</div>
         <div class="col-sm-10">
-          <h1 class="c-text">Welcome</h1>
+          <h1 class="c-text">Algorithms</h1>
+
+          <h3 class="c-text">Sorting Algorithms</h3>
+          <div class="list-group">
+            <a href="quicksort.html" class="list-group-item list-group-item-action">quicksort
+              <p class="list-group-item-text">An overview and implementation of the quicksort algorithm</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">mergesort
+              <p class="list-group-item-text">An overview and implementation of the mergesort algorithm</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">timsort
+              <p class="list-group-item-text">An overview and implementation of the timsort algorithm</p>
+            </a>
+          </div>
+
+          <h3 class="c-text">Computing Algorithms</h3>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">fibonacci
+              <p class="list-group-item-text">An overview and a few examples of an array</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">prime numbers
+              <p class="list-group-item-text">An overview and implementation of the stack data structure</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">longest subsequence
+              <p class="list-group-item-text">An overview and implementation of the queue data structure</p>
+            </a>
+          </div>
+
         </div>
         <div class="col-sm-1">ads</div>
       </div>
