@@ -29,3 +29,7 @@ sudo apt-get install mysql-server
 # import my repo
 cd /var/lib/tomcat7/webapps
 git clone repo
+
+
+
+Wwn0Hi:jaH0g
