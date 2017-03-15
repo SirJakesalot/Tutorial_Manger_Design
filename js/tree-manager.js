@@ -1,12 +1,11 @@
 function getCrumbs(pos) {
-  var node = $(pos).parent().prev();
+  // get the previous categories of the selected item
+  var node = $(pos).parent().prev(); // selected node
   var crumbs = [];
-  crumbs.push($(node).text().trim());
-  while (crumbs[crumbs.length-1]) {
-    node = $(node).parent().parent().prev().prev().prev();
-    crumbs.push($(node).text().trim());
+  while (node.text()) {
+    crumbs.push(node.text().trim());
+    node = $(node).parent().parent().prev().prev(); // climb category lineage
   }
-  crumbs.pop();
   return crumbs.reverse();
 }
 
@@ -180,6 +179,18 @@ function delTut(event) {
 }
 function addCatReq(event) {
   console.log("addCatReq");
+  var params = {name: $("#addCatModalName").val()};
+  var request = $.ajax({
+    url: "api/addcat",
+    type: "post",
+    data: params,
+    datatype: "json",
+    contenttype: "application/x-www-form-urlencoded; charset=utf-8"
+  });
+  request.done(handleAddCatResponse);
+}
+function handleAddCatResponse(response) {
+  console.log(response.status, response.message);
 }
 function editCatReq(event) {
   console.log("editCatReq");
@@ -221,7 +232,7 @@ $(function () {
       }
       e.stopPropagation();
     });
-  var subCats = $('#tree > ul > li.parent_li > ul > li.parent_li > ul > li.parent_li > span > i.glyphicon-folder-open').parent();
+  var subCats = $('#tree > ul > li.parent_li > ul > li.parent_li > ul > li.parent_li >ul > li.parent_li > span > i.glyphicon-folder-open').parent();
   subCats.after(genSubCatBtnGrp());
   $('.glyphicon-folder-open').parent().not(subCats).after(genCatBtnGrp());
   $('.glyphicon-leaf').parent().after(genTutBtnGrp());

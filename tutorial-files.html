@@ -97,53 +97,48 @@
           <div id="tree" class="tree well">
             <ul>
               <li>
-                <span><i class="glyphicon glyphicon-folder-open"></i> Fundamentals</span>
-                <a href="fundamentals/">link</a> 
+                <span id="treeRoot"><i class="glyphicon glyphicon-folder-open"></i> Tutorial Tree</span>
                 <ul>
                   <li>
-                    <span><i class="glyphicon glyphicon-folder-open"></i> Algorithms</span>
-                    <a href="fundamentals/algorithms/">link</a>
+                    <span><i class="glyphicon glyphicon-folder-open"></i> Fundamentals</span>
                     <ul>
                       <li>
-                        <span><i class="glyphicon glyphicon-folder-open"></i> Sorting</span> 
-                        <a href="fundamentals/algorithms/sorting/">link</a>
+                        <span><i class="glyphicon glyphicon-folder-open"></i> Algorithms</span>
                         <ul>
                           <li>
-                            <span><i class="glyphicon glyphicon-leaf"></i> Quicksort</span> 
-                            <a href="fundamentals/algorithms/sorting/">link</a>
+                            <span><i class="glyphicon glyphicon-folder-open"></i> Sorting</span> 
+                            <ul>
+                              <li>
+                                <span><i class="glyphicon glyphicon-leaf"></i> Quicksort</span> 
+                              </li>
+                              <li>
+                                <span><i class="glyphicon glyphicon-leaf"></i> Mergesort</span> 
+                              </li>
+                              <li>
+                                <span><i class="glyphicon glyphicon-leaf"></i> Timsort</span> 
+                              </li>
+                            </ul>
                           </li>
                           <li>
-                            <span><i class="glyphicon glyphicon-leaf"></i> Mergesort</span> 
-                            <a href="fundamentals/algorithms/sorting/">link</a>
-                          </li>
-                          <li>
-                            <span><i class="glyphicon glyphicon-leaf"></i> Timsort</span> 
-                            <a href="fundamentals/algorithms/sorting/">link</a>
+                            <span><i class="glyphicon glyphicon-folder-open"></i> Computing</span> 
+                            <ul>
+                              <li>
+                                <span><i class="glyphicon glyphicon-leaf"></i> Fibonacci</span> 
+                              </li>
+                              <li>
+                                <span><i class="glyphicon glyphicon-leaf"></i> Prime Numbers</span> 
+                              </li>
+                              <li>
+                                <span><i class="glyphicon glyphicon-leaf"></i> Longest CS</span> 
+                              </li>
+                            </ul>
                           </li>
                         </ul>
                       </li>
                       <li>
-                        <span><i class="glyphicon glyphicon-folder-open"></i> Computing</span> 
-                        <a href="fundamentals/algorithms/computing/">link</a>
-                        <ul>
-                          <li>
-                            <span><i class="glyphicon glyphicon-leaf"></i> Fibonacci</span> 
-                            <a href="fundamentals/algorithms/computing/fibonacci">link</a>
-                          </li>
-                          <li>
-                            <span><i class="glyphicon glyphicon-leaf"></i> Prime Numbers</span> 
-                            <a href="fundamentals/algorithms/computing/prime-numbers">link</a>
-                          </li>
-                          <li>
-                            <span><i class="glyphicon glyphicon-leaf"></i> Longest CS</span> 
-                            <a href="fundamentals/algorithms/computing/lcs">link</a>
-                          </li>
-                        </ul>
+                        <span><i class="glyphicon glyphicon-folder-open"></i> Data Structures</span>
                       </li>
                     </ul>
-                  </li>
-                  <li>
-                    <span><i class="glyphicon glyphicon-folder-open"></i> Data Structures</span><a href="algorithms/sorting/">link</a>
                   </li>
                 </ul>
               </li>
@@ -161,7 +156,7 @@
               <div class="modal-body">
                 <ol class="breadcrumb"></ol>
                 <div class="input-group has-feedback">
-                  <input type="text" class="form-control" placeholder="Category Name"/>
+                  <input id="addCatModalName" type="text" class="form-control" placeholder="Category Name"/>
                 </div>
               </div>
               <div class="modal-footer">
