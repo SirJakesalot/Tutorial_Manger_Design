@@ -54,9 +54,12 @@ http://jsfiddle.net/riteshpahwa/6xm9ngr2/
 .tree>ul>li::before, .tree>ul>li::after {
   border:0
 }
+/*
 .tree li:last-child::before {
   height:30px
 }
+*/
+
 .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
   background:#eee;
   border:1px solid #94a0b4;

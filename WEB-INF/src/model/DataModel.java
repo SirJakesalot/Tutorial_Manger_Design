@@ -39,6 +39,10 @@ public class DataModel {
     static final String USER = "pageDB_admin";
     static final String PASS = "m@n@g3r";
 
+    /* queries */
+    public static final String SELECT_NAME_COUNT = "SELECT COUNT(*) FROM (SELECT name FROM categories UNION SELECT name FROM pages) AS names WHERE name=?;";
+    public static final String SELECT_LABEL_COUNT = "SELECT COUNT(*) FROM (SELECT label FROM categories UNION SELECT label FROM pages) AS labels WHERE label=?;";
+
     /* used to open and hold a database connection */
     public Connection conn        = null;
     public PreparedStatement stmt = null;
@@ -106,6 +110,16 @@ public class DataModel {
             }
         }
         this.rs = this.stmt.executeQuery();
+    }
+
+    public int executeAggregateQuery(String query, List<String> params) throws SQLException {
+        executeQuery(query, params);
+        int count = 0;
+        if (this.rs.isBeforeFirst()) {
+            this.rs.next();
+            count = this.rs.getInt(1);
+        }
+        return count;
     }
 
     public TreeNode getTree() throws SQLException {

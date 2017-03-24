@@ -11,7 +11,8 @@ public class Category {
     private String label;
 
     /* SQL statements */
-    public static final String SELECT_ALL = "SELECT * FROM categories";
+    public static final String SELECT_ALL = "SELECT * FROM categories;";
+    public static final String SELECT_ID_COUNT = "SELECT COUNT(*) FROM categories WHERE id=?;";
     public static final String INSERT     = "INSERT INTO categories(parent_id, name, label) VALUES (?,?,?);";
     public static final String DELETE_ID  = "DELETE FROM categories WHERE id=?;";
 

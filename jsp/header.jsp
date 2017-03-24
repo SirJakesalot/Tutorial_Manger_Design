@@ -12,7 +12,7 @@
 
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags must come first in the head; any other head content must come *after* these tags -->
@@ -24,11 +24,15 @@
   <script src="vendors/bootstrap/bootstrap-dist.min.js"></script>
   <!-- local datasource -->
   <script src="js/datasource.js"></script>
+  <script src="js/dashboard.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- CSS LIBRARIES -->
   <!-- bootstrap -->
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap-dist.min.css">
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap-theme.min.css">
+
   <title>${title}</title>
 </head>
 
@@ -54,7 +58,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${tree.cat().label()}<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${tree.cat().label()}<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
                 <c:forEach var="node" items="${tree.children()}">
@@ -62,7 +66,7 @@
                     <h6 class="dropdown-header"><a href="${context}/${node.cat().name()}">${node.cat().label()}</a></h6>
                     <c:forEach var="child" items="${node.children()}">
                       <c:if test="${child.cat() != null}">
-                        <li><a href="${context}/${child.cat().name()}">${child.cat().label()}</a><li>
+                        <li><a href="${context}/${child.cat().name()}">${child.cat().label()}</a></li>
                       </c:if>
                     </c:forEach>
                     <li role="separator" class="divider"></li>
@@ -70,7 +74,7 @@
                 </c:forEach>
               </ul>
             </li>
-            <li><a href="tutorial-files.html">Manage Tutorial Files</a></li>
+            <li><a href="${context}/manage-pages">Manage Tutorial Files</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
