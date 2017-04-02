@@ -22,9 +22,10 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-@WebServlet("/api/addcat")
+@WebServlet("/api/addpage")
 
-public class AddCategory extends PageDBServlet {
+
+public class AddPage extends PageDBServlet {
 
     private Map<String, String> checkPageDB(DataModel dm, Map<String, String> reqParams) throws SQLException {
         Map<String, String> output = new HashMap<String, String>();
@@ -52,24 +53,25 @@ public class AddCategory extends PageDBServlet {
         params = new ArrayList<String>();
         params.add(reqParams.get("parent_id"));
         count = dm.executeAggregateQuery("CALL CountCatId(?);", params);
+
         if (count == 0) {
-            String msg = String.format("Parent Id {%s} does not exist", reqParams.get("parent_id"));
+            String msg = String.format("Parent category id {%s} does not exist", reqParams.get("parent_id"));
             output.put("error", msg);
             return output;
         }
 
         params = new ArrayList<String>();
-        params.add(reqParams.get("parent_id"));
         params.add(reqParams.get("name"));
         params.add(reqParams.get("label"));
-        count = dm.executeUpdate("CALL InsertCat(?,?,?)", params);
+        params.add(reqParams.get("parent_id"));
+        count = dm.executeUpdate("CALL InsertPage(?,?,?);", params);
         if (count == 0) {
-            String msg = String.format("Unable to insert new record");
+            String msg = String.format("Unable to insert new page");
             output.put("error", msg);
             return output;
         }
 
-        output.put("success", "Successfully inserted new record");
+        output.put("success", "Successfully inserted new page");
         return output;
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -92,7 +94,7 @@ public class AddCategory extends PageDBServlet {
 
         } catch(Exception e) {
             String trace = ExceptionUtils.getStackTrace(e);
-            System.out.println("Error AddCategory\n" + trace);
+            System.out.println("Error AddPage\n" + trace);
             output.put("error", trace);
         } finally {
             if (this.dm != null) { this.dm.closeConnection(); }

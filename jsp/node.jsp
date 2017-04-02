@@ -6,7 +6,7 @@
     <ul>
       <li>
         <span><i class="glyphicon glyphicon-leaf"></i> ${n.page().name()}</span>
-        <div class="pull-right btn-group btn-group-sm">
+        <div id="${n.page().id()}" class="pull-right btn-group btn-group-sm" data-name="${n.page().name()}" data-label="${n.page().label()}" data-type="page">
           <button class="btn btn-info" data-toggle="modal" data-target="#editPageModal">
             <i class="glyphicon glyphicon-edit"></i>
           </button>
@@ -21,7 +21,7 @@
     <ul>
       <li>
         <span><i class="glyphicon glyphicon-folder-open"></i> ${n.cat().name()}</span>
-        <div class="pull-right btn-group btn-group-sm">
+        <div id="${n.cat().id()}" class="pull-right btn-group btn-group-sm" data-name="${n.cat().name()}" data-label="${n.cat().label()}" data-type="cat">
           <button class="btn btn-success" data-toggle="modal" data-target="#addNodeModal">
             <i class="glyphicon glyphicon-plus"></i>
           </button>

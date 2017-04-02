@@ -22,54 +22,47 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-@WebServlet("/api/addcat")
+@WebServlet("/api/delcat")
 
-public class AddCategory extends PageDBServlet {
+public class DelCategory extends PageDBServlet {
 
     private Map<String, String> checkPageDB(DataModel dm, Map<String, String> reqParams) throws SQLException {
         Map<String, String> output = new HashMap<String, String>();
-        /* Ensure name is unique  */
+
+        /* Ensure exists and unique */
         List<String> params = new ArrayList<String>();
-        params.add(reqParams.get("name"));
-        int count = dm.executeAggregateQuery("CALL CountName(?);", params);
-        if (count != 0) {
-            String msg = String.format("Name {%s} already taken", reqParams.get("name"));
-            output.put("error", msg);
-            return output;
-        }
-
-        /* Ensure label is unique  */
-        params = new ArrayList<String>();
-        params.add(reqParams.get("label"));
-        count = dm.executeAggregateQuery("CALL CountLabel(?);", params);
-        if (count != 0) {
-            String msg = String.format("Label {%s} already taken", reqParams.get("label"));
-            output.put("error", msg);
-            return output;
-        }
-
-        /* Ensure parent_id exists  */
-        params = new ArrayList<String>();
-        params.add(reqParams.get("parent_id"));
-        count = dm.executeAggregateQuery("CALL CountCatId(?);", params);
+        params.add(reqParams.get("id"));
+        int count = dm.executeAggregateQuery("CALL CountCatId(?);", params);
         if (count == 0) {
-            String msg = String.format("Parent Id {%s} does not exist", reqParams.get("parent_id"));
+            String msg = "This category does not exist";
+            output.put("error", msg);
+            return output;
+        } else if (count > 1) {
+            String msg = "This category has id conflicts";
+            output.put("error", msg);
+            return output;
+        }
+
+        /* Ensure no children  */
+        params = new ArrayList<String>();
+        params.add(reqParams.get("id"));
+        count = dm.executeAggregateQuery("CALL CountParentId(?);", params);
+        if (count != 0) {
+            String msg = "This category is not empty";
             output.put("error", msg);
             return output;
         }
 
         params = new ArrayList<String>();
-        params.add(reqParams.get("parent_id"));
-        params.add(reqParams.get("name"));
-        params.add(reqParams.get("label"));
-        count = dm.executeUpdate("CALL InsertCat(?,?,?)", params);
+        params.add(reqParams.get("id"));
+        count = dm.executeUpdate("CALL DeleteCatById(?);", params);
         if (count == 0) {
-            String msg = String.format("Unable to insert new record");
+            String msg = String.format("Unable to delete category");
             output.put("error", msg);
             return output;
         }
 
-        output.put("success", "Successfully inserted new record");
+        output.put("success", "Successfully deleted category");
         return output;
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -82,9 +75,7 @@ public class AddCategory extends PageDBServlet {
 
             /* clean request parameters */
             Map<String, String> reqParams = new HashMap<String, String>();
-            reqParams.put("name", request.getParameter("name"));
-            reqParams.put("label", request.getParameter("label"));
-            reqParams.put("parent_id", request.getParameter("parent_id"));
+            reqParams.put("id", request.getParameter("id"));
             this.checkRequestParams(reqParams);
 
             this.dm = new DataModel();
@@ -92,7 +83,7 @@ public class AddCategory extends PageDBServlet {
 
         } catch(Exception e) {
             String trace = ExceptionUtils.getStackTrace(e);
-            System.out.println("Error AddCategory\n" + trace);
+            System.out.println("Error DelCategory\n" + trace);
             output.put("error", trace);
         } finally {
             if (this.dm != null) { this.dm.closeConnection(); }

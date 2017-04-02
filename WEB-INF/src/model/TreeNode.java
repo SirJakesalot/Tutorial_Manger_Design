@@ -29,7 +29,7 @@ public class TreeNode {
         children(new ArrayList<TreeNode>());
     }
 
-    /* tutorial node */
+    /* page node */
     public TreeNode(Page new_page) {
         cat(null);
         page(new_page);
@@ -45,30 +45,44 @@ public class TreeNode {
         this.children.add(new TreeNode(page));
     }
 
-    public static TreeNode buildTree(Map<String, List<String>> lineage, Map<String, Category> cats, Map<String, List<Page>> pages, String id) {
-        TreeNode n = new TreeNode(cats.get(id));
+    /*
+     * lineage: parent category -> sub categories
+     * cats: category id -> Category obj
+     * pages: category id -> List of page children
+     * id: category id that we are currently observing
+    **/
+    public static TreeNode buildTree(Map<String, List<String>> lineage,
+                                     Map<String, Category> cats,
+                                     Map<String, List<Page>> pages,
+                                     String id) {
+        /* create node for the observed id */
+        TreeNode node = new TreeNode(cats.get(id));
+        /* add page children first */
         if (pages.get(id) != null) {
             for (Page pg : pages.get(id)) {
-                n.addChild(pg);
+                node.addChild(pg);
             }
         }
+        /* add the result of recurring on the child category id */
         if (lineage.get(id) != null) {
             for (String child : lineage.get(id)) {
-                n.addChild(buildTree(lineage, cats, pages, child));
+                node.addChild(buildTree(lineage, cats, pages, child));
             }
         }
-        return n;
+        /* return that tree bruh */
+        return node;
     }
 
+    /* print the tree starting at the root */
     public void print() {
-        // cat is always at the root
-        //cat().print();
+        /* root is always a Category */
         System.out.println(cat().name());
         for (TreeNode node : children()) {
             node.print(1);
         }
     }
 
+    /* print current node with that number of spaces */
     private void print(int spc) {
         String spcs = String.format("%" + spc + "s","");
         System.out.print(spcs);

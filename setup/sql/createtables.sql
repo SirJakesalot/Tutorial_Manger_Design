@@ -65,6 +65,8 @@ GRANT ALL ON pageDB.* TO 'pageDB_admin'@'localhost';
 DROP USER IF EXISTS 'pageDB_user'@'localhost';
 CREATE USER 'pageDB_user'@'localhost';
 GRANT SELECT ON pageDB.* TO 'pageDB_user'@'localhost';
+
+
 /*GRANT EXECUTE ON PROCEDURE tutorialdb.GetTop2Lvls TO 'tutorialdb_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE tutorialdb.GetCatsFor1Lvl TO 'tutorialdb_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE tutorialdb.GetCatsFor2Lvls TO 'tutorialdb_user'@'localhost';

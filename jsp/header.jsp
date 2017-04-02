@@ -23,8 +23,9 @@
   <!-- bootstrap -->
   <script src="vendors/bootstrap/bootstrap-dist.min.js"></script>
   <!-- local datasource -->
-  <script src="js/datasource.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="js/manage-files.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="vendors/bootstrap-select/bootstrap-select.js"></script>
 
   <link rel="stylesheet" href="css/style.css">
 
@@ -32,6 +33,9 @@
   <!-- bootstrap -->
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap-dist.min.css">
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="vendors/bootstrap-select/bootstrap-select.css">
 
   <title>${title}</title>
 </head>

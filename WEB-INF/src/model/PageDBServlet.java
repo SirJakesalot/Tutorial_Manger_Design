@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 public class PageDBServlet extends HttpServlet {
     public DataModel dm = null;
+
     public static void checkRequestParams(Map<String, String> params) throws ServletException {
         for (Map.Entry<String, String> entry: params.entrySet()) {
             String val = entry.getValue();

@@ -5,20 +5,16 @@
   }  
 </style>
 
-<h1 class="c-text">Welcome</h1>
 <div id="tree" class="tree well">
   <ul>
     <li>
       <span><i class="glyphicon glyphicon-folder-open"></i> ${tree.cat().name()}</span>
-      <div class="pull-right btn-group btn-group-sm">
+      <div id="${tree.cat().id()}" class="pull-right btn-group btn-group-sm" data-name="${tree.cat().name()}" data-label="${tree.cat().label()}" data-type="cat">
         <button class="btn btn-success" data-toggle="modal" data-target="#addNodeModal">
           <i class="glyphicon glyphicon-plus"></i>
         </button>
         <button class="btn btn-info" data-toggle="modal" data-target="#editCatModal">
           <i class="glyphicon glyphicon-edit"></i>
-        </button>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#delCatModal">
-          <i class="glyphicon glyphicon-trash"></i>
         </button>
       </div>
       <c:set var="node" value="${tree}" scope="request"></c:set>
@@ -28,12 +24,8 @@
 </div>
 
 
-<button class="btn btn-info" data-toggle="modal" data-target="#addNodeModal">
-  <i class="glyphicon glyphicon-plus"></i>
-</button>
-
 <div id="addNodeModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -47,7 +39,12 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="addPage">
-              <p>Add Page Data</p>
+              <br>
+              <div class="input-group has-feedback">
+                <input id="addPageName" type="text" class="form-control" placeholder="Page Name"/>
+                <input id="addPageLabel" type="text" class="form-control" placeholder="Page Label"/>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="addPage();">Submit</button>
             </div>
             <div class="tab-pane" id="addCat">
               <br>
@@ -55,7 +52,7 @@
                 <input id="addCatName" type="text" class="form-control" placeholder="Category Name"/>
                 <input id="addCatLabel" type="text" class="form-control" placeholder="Category Label"/>
               </div>
-              <button type="button" class="btn btn-primary" onclick="addCategory('${context}/api/addcat');">Submit</button>
+              <button type="button" class="btn btn-primary" onclick="addCat();">Submit</button>
             </div>
           </div>
         </div>
@@ -76,7 +73,10 @@
         <h4 class="modal-title">Edit Category</h4>
       </div>
       <div class="modal-body">
-        <p>Edit Category Data</p>
+        <select id="editCatPicker" data-live-search="true" data-live-search-style="contains" class="selectpicker"></select>
+        <input id="editCatName" type="text" class="form-control" placeholder="New Category Name"/>
+        <input id="editCatLabel" type="text" class="form-control" placeholder="New Category Label"/>
+        <button type="button" class="btn btn-primary" onclick="editCat();">Submit</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -97,7 +97,7 @@
         <p>Delete Category Data</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="delCat();">Submit</button>
       </div>
     </div>
   </div>
@@ -111,7 +111,11 @@
         <h4 class="modal-title">Edit Page</h4>
       </div>
       <div class="modal-body">
-        <p>Edit Page Data</p>
+        <div class="input-group has-feedback">
+          <input id="editPageName" type="text" class="form-control" placeholder="New Page Name"/>
+          <input id="editPageLabel" type="text" class="form-control" placeholder="New Page Label"/>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="editPage();">Submit</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -132,7 +136,7 @@
         <p>Delete Page Data</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="delPage();">Submit</button>
       </div>
     </div>
   </div>
@@ -164,7 +168,43 @@ $(function () {
       }
     e.stopPropagation();
   });
+  $.each($('div').find('[data-type="cat"]'), function(i) {
+    var opt = $('<option/>')
+                .val($(this).attr('id'))
+                .text($(this).data('label'));
+    $.each($('.selectpicker'), function() {
+      $(this).append(opt);
+    });
+  });
+  $.each($('.selectpicker'), function() {
+    $(this).selectpicker('refresh');
+  });
 });
+$('.modal').on('show.bs.modal', function(e) {
+  $(this).data('trigger', $(e.relatedTarget).parent().attr('id'));
+});
+$('#editCatModal').on('show.bs.modal', function(e) {
+  var btn_group = $(e.relatedTarget).parent();
+  if (btn_group.attr('id') == '${tree.cat().id()}') {
+    $('#editCatModal .selectpicker').hide();
+  } else {
+    $('#editCatModal .selectpicker').show();
+  }
+  $('#editCatName').val($(e.relatedTarget).parent().data('name'));
+  $('#editCatLabel').val($(e.relatedTarget).parent().data('label'));
+});
+$('#editPageModal').on('show.bs.modal', function(e) {
+  $('#editPageName').val($(e.relatedTarget).parent().data('name'));
+  $('#editPageLabel').val($(e.relatedTarget).parent().data('label'));
+});
+
+
+var addCatURL  = "${context}/api/addcat";
+var delCatURL  = "${context}/api/delcat";
+var editCatURL = "${context}/api/editcat";
+var addPageURL  = "${context}/api/addpage";
+var delPageURL  = "${context}/api/delpage";
+var editPageURL = "${context}/api/editpage";
 </script>
 
 <%@ include file="footer.jsp" %>

@@ -4,8 +4,6 @@ import pageDB_model.DataModel;
 import pageDB_model.TreeNode;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,9 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/main")
 
-
 public class MainPage extends HttpServlet {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataModel dm = null;
         try {
             dm = new DataModel();
@@ -26,13 +23,13 @@ public class MainPage extends HttpServlet {
             request.setAttribute("tree", tree);
         } catch (Exception e) {
             DataModel.log("MainPage doGet", e);
-            request.setAttribute("err", "MainPage error");
+            request.setAttribute("error", "MainPage error");
         } finally {
             dm.closeConnection();
             request.getRequestDispatcher("jsp/main.jsp").forward(request, response);
         }
     }
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException { 
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{ 
         doGet(request, response);
     }
 }

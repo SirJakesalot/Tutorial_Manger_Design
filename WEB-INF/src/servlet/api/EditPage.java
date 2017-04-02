@@ -22,16 +22,18 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-@WebServlet("/api/addcat")
+@WebServlet("/api/editpage")
 
-public class AddCategory extends PageDBServlet {
+
+public class EditPage extends PageDBServlet {
 
     private Map<String, String> checkPageDB(DataModel dm, Map<String, String> reqParams) throws SQLException {
         Map<String, String> output = new HashMap<String, String>();
         /* Ensure name is unique  */
         List<String> params = new ArrayList<String>();
+        params.add(reqParams.get("id"));
         params.add(reqParams.get("name"));
-        int count = dm.executeAggregateQuery("CALL CountName(?);", params);
+        int count = dm.executeAggregateQuery("CALL CountNameExceptPageId(?,?);", params);
         if (count != 0) {
             String msg = String.format("Name {%s} already taken", reqParams.get("name"));
             output.put("error", msg);
@@ -40,36 +42,37 @@ public class AddCategory extends PageDBServlet {
 
         /* Ensure label is unique  */
         params = new ArrayList<String>();
+        params.add(reqParams.get("id"));
         params.add(reqParams.get("label"));
-        count = dm.executeAggregateQuery("CALL CountLabel(?);", params);
+        count = dm.executeAggregateQuery("CALL CountLabelExceptPageId(?,?);", params);
         if (count != 0) {
             String msg = String.format("Label {%s} already taken", reqParams.get("label"));
             output.put("error", msg);
             return output;
         }
 
-        /* Ensure parent_id exists  */
+        /* Ensure id exists */
         params = new ArrayList<String>();
-        params.add(reqParams.get("parent_id"));
-        count = dm.executeAggregateQuery("CALL CountCatId(?);", params);
+        params.add(reqParams.get("id"));
+        count = dm.executeAggregateQuery("CALL CountPageId(?);", params);
         if (count == 0) {
-            String msg = String.format("Parent Id {%s} does not exist", reqParams.get("parent_id"));
+            String msg = String.format("Page Id {%s} does not exist", reqParams.get("id"));
             output.put("error", msg);
             return output;
         }
 
         params = new ArrayList<String>();
-        params.add(reqParams.get("parent_id"));
+        params.add(reqParams.get("id"));
         params.add(reqParams.get("name"));
         params.add(reqParams.get("label"));
-        count = dm.executeUpdate("CALL InsertCat(?,?,?)", params);
+        count = dm.executeUpdate("CALL UpdatePage(?,?,?);", params);
         if (count == 0) {
-            String msg = String.format("Unable to insert new record");
+            String msg = String.format("Unable to update page");
             output.put("error", msg);
             return output;
         }
 
-        output.put("success", "Successfully inserted new record");
+        output.put("success", "Successfully updated record");
         return output;
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -82,9 +85,9 @@ public class AddCategory extends PageDBServlet {
 
             /* clean request parameters */
             Map<String, String> reqParams = new HashMap<String, String>();
+            reqParams.put("id", request.getParameter("id"));
             reqParams.put("name", request.getParameter("name"));
             reqParams.put("label", request.getParameter("label"));
-            reqParams.put("parent_id", request.getParameter("parent_id"));
             this.checkRequestParams(reqParams);
 
             this.dm = new DataModel();
@@ -92,7 +95,7 @@ public class AddCategory extends PageDBServlet {
 
         } catch(Exception e) {
             String trace = ExceptionUtils.getStackTrace(e);
-            System.out.println("Error AddCategory\n" + trace);
+            System.out.println("Error EditPage\n" + trace);
             output.put("error", trace);
         } finally {
             if (this.dm != null) { this.dm.closeConnection(); }
@@ -104,4 +107,5 @@ public class AddCategory extends PageDBServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         doPost(request, response);
     }
+
 }

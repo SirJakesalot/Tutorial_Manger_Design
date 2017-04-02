@@ -39,10 +39,6 @@ public class DataModel {
     static final String USER = "pageDB_admin";
     static final String PASS = "m@n@g3r";
 
-    /* queries */
-    public static final String SELECT_NAME_COUNT = "SELECT COUNT(*) FROM (SELECT name FROM categories UNION SELECT name FROM pages) AS names WHERE name=?;";
-    public static final String SELECT_LABEL_COUNT = "SELECT COUNT(*) FROM (SELECT label FROM categories UNION SELECT label FROM pages) AS labels WHERE label=?;";
-
     /* used to open and hold a database connection */
     public Connection conn        = null;
     public PreparedStatement stmt = null;
@@ -63,8 +59,8 @@ public class DataModel {
      * @return Connection Open connection to the local tutorial database.
      */
     public Connection getConnection() throws Exception {
-        Class.forName(this.JDBC_DRIVER).newInstance();
-        return DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+        Class.forName(JDBC_DRIVER).newInstance();
+        return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
     /**
@@ -127,11 +123,11 @@ public class DataModel {
          * e.g. {Category Id : Category} */
         Map<String, Category> cats = new HashMap<String, Category>();
         /* container for Category lineage
-         * e.g. {Category Parent Id : [Category Child Ids]} */
+         * e.g. {Category Parent Id : [Category Child Id, ...]} */
         Map<String, List<String>> lineage = new HashMap<String, List<String>>();
 
         /* query database to fill lineage and cats */
-        executeQuery(Category.SELECT_ALL, null);
+        executeQuery("CALL GetAllCats", null);
 
         if (this.rs.isBeforeFirst()) {
             while (this.rs.next()) {
@@ -144,17 +140,17 @@ public class DataModel {
             }
         }
 
-        // no categories or no root node found
+        /* no categories or no root node found */
         if (cats.isEmpty() || lineage.get(null) == null) {
             return null;
         }
 
         /* container to hold each page's category 
-         * e.g. {Category Id : [Page]} */
+         * e.g. {Category Id : [Page, ...]} */
         Map<String, List<Page>> pages = new HashMap<String, List<Page>>();
 
         /* query database and fill pages container */
-        executeQuery(Page.SELECT_ALL, null);
+        executeQuery("CALL GetAllPages", null);
         if (this.rs.isBeforeFirst()) {
             while (this.rs.next()) {
                 Page page = new Page(this.rs);
@@ -165,11 +161,9 @@ public class DataModel {
             }
         }
 
-
         /* build the tree, starting from null's child */
         TreeNode tree = TreeNode.buildTree(lineage, cats, pages, lineage.get(null).get(0));
-        tree.print();
-
+        //tree.print();
         return tree;
     }
 }
