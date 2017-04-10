@@ -2,6 +2,7 @@ package pageDB_api;
 
 import pageDB_model.DataModel;
 import pageDB_model.Category;
+import pageDB_model.Page;
 import pageDB_model.PageDBServlet;
 import pageDB_model.PageDBServletException;
 
@@ -23,39 +24,40 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-@WebServlet("/api/delpage")
+@WebServlet("/api/getpagecontent")
 
-public class DelPage extends PageDBServlet {
+
+public class GetPageContent extends PageDBServlet {
 
     private Map<String, String> checkPageDB(DataModel dm, Map<String, String> reqParams) throws SQLException {
-        Map<String, String> output = new HashMap<String, String>();
+        String id = reqParams.get("id");
 
-        /* Ensure exists and unique */
+        Map<String, String> output = new HashMap<String, String>();
+        /* Ensure id exists */
         List<String> params = new ArrayList<String>();
-        params.add(reqParams.get("id"));
+        params.add(id);
         int count = dm.executeAggregateQuery("CALL CountPageId(?);", params);
         if (count == 0) {
-            String msg = "This page does not exist";
-            output.put("error", msg);
-            return output;
-        } else if (count > 1) {
-            String msg = "This page has id conflicts";
+            String msg = String.format("Page Id {%s} does not exist", id);
             output.put("error", msg);
             return output;
         }
 
-        params = new ArrayList<String>();
-        params.add(reqParams.get("id"));
-        count = dm.executeUpdate("CALL DeletePageById(?);", params);
-        if (count == 0) {
-            String msg = String.format("Unable to delete page");
+        Page pg = dm.getPageForQuery("CALL GetPageById(?);", params);
+
+        if (pg == null) {
+            String msg = String.format("Unable to retrieve page");
             output.put("error", msg);
             return output;
         }
+        if (pg.content() == null) {
+            pg.content("");
+        }
 
-        output.put("success", "Successfully deleted page");
+        output.put("content", pg.content());
         return output;
     }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         /* the map returned */
         Map<String, String> output = new HashMap<String, String>();
@@ -73,11 +75,11 @@ public class DelPage extends PageDBServlet {
             output = this.checkPageDB(dm, reqParams);
         } catch(PageDBServletException e) {
             String trace = ExceptionUtils.getStackTrace(e);
-            System.out.println("Error DelPage\n" + trace);
+            System.out.println("Error GetPageContent\n" + trace);
             output.put("error", e.getMessage());
         } catch(Exception e) {
             String trace = ExceptionUtils.getStackTrace(e);
-            System.out.println("Error DelPage\n" + trace);
+            System.out.println("Error GetPageContent\n" + trace);
             output.put("error", trace);
         } finally {
             if (this.dm != null) { this.dm.closeConnection(); }

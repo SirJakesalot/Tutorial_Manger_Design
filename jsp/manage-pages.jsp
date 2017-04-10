@@ -33,32 +33,39 @@
       </div>
       <div class="modal-body">
         <div class="tabbable">
-          <ul class="nav nav-tabs">
+          <ul id="addNodeTabs" class="nav nav-tabs">
             <li class="active"><a href="#addPage" data-toggle="tab">Add Page</a></li>
             <li><a href="#addCat" data-toggle="tab">Add Category</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="addPage">
               <br>
-              <div class="input-group has-feedback">
-                <input id="addPageName" type="text" class="form-control" placeholder="Page Name"/>
-                <input id="addPageLabel" type="text" class="form-control" placeholder="Page Label"/>
+              <div class="form-group">
+                <label for="addPageName">Page Name</label>
+                <input id="addPageName" type="text" class="form-control" placeholder="New Page Name"/>
               </div>
-              <button type="button" class="btn btn-primary" onclick="addPage();">Submit</button>
+              <div class="form-group">
+                <label for="addPageLabel">Page Label</label>
+                <input id="addPageLabel" type="text" class="form-control" placeholder="New Page Label"/>
+              </div>
             </div>
             <div class="tab-pane" id="addCat">
               <br>
-              <div class="input-group has-feedback">
-                <input id="addCatName" type="text" class="form-control" placeholder="Category Name"/>
-                <input id="addCatLabel" type="text" class="form-control" placeholder="Category Label"/>
+              <div class="form-group">
+                <label for="addCatName">Category Name</label>
+                <input id="addCatName" type="text" class="form-control" placeholder="New Category Name"/>
               </div>
-              <button type="button" class="btn btn-primary" onclick="addCat();">Submit</button>
+              <div class="form-group">
+                <label for="addCatLabel">Category Label</label>
+                <input id="addCatLabel" type="text" class="form-control" placeholder="New Category Label"/>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="addNode();">Add</button>
       </div>
     </div>
   </div>
@@ -66,20 +73,29 @@
         
         
 <div id="editCatModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Edit Category</h4>
       </div>
       <div class="modal-body">
-        <select id="editCatPicker" data-live-search="true" data-live-search-style="contains" class="selectpicker"></select>
-        <input id="editCatName" type="text" class="form-control" placeholder="New Category Name"/>
-        <input id="editCatLabel" type="text" class="form-control" placeholder="New Category Label"/>
-        <button type="button" class="btn btn-primary" onclick="editCat();">Submit</button>
+        <div class="form-group">
+          <label for="editCatPicker">Parent Category</label></br>
+          <select id="editCatPicker" data-live-search="true" data-live-search-style="contains" class="selectpicker"></select>
+        </div>
+        <div class="form-group">
+          <label for="editCatName">Category Name</label>
+          <input id="editCatName" type="text" class="form-control" placeholder="New Category Name"/>
+        </div>
+        <div class="form-group">
+          <label for="editCatLabel">Category Label</label>
+          <input id="editCatLabel" type="text" class="form-control" placeholder="New Category Label"/>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="editCat();">Save</button>
       </div>
     </div>
   </div>
@@ -87,56 +103,69 @@
 
 
 <div id="delCatModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Delete Category</h4>
       </div>
       <div class="modal-body">
-        <p>Delete Category Data</p>
+        <strong>Are you sure you want to delete this category?</strong>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="delCat();">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="delCat();">Delete</button>
       </div>
     </div>
   </div>
 </div>
 
 <div id="editPageModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Edit Page</h4>
       </div>
       <div class="modal-body">
-        <div class="input-group has-feedback">
+        <div class="form-group">
+          <label for="editPagePicker">Parent Category</label></br>
+          <select id="editPagePicker" data-live-search="true" data-live-search-style="contains" class="selectpicker"></select>
+        </div>
+        <div class="form-group">
+          <label for="editPageName">Page Name</label>
           <input id="editPageName" type="text" class="form-control" placeholder="New Page Name"/>
+        </div>
+        <div class="form-group">
+          <label for="editPageLabel">Page Label</label>
           <input id="editPageLabel" type="text" class="form-control" placeholder="New Page Label"/>
         </div>
-        <button type="button" class="btn btn-primary" onclick="editPage();">Submit</button>
+        <div class="form-group">
+          <label for="editPageEditor">Page Content</label>
+          <div id="editPageEditor"></div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="editPage();">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-
 <div id="delPageModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Delete Page</h4>
       </div>
       <div class="modal-body">
-        <p>Delete Page Data</p>
+        <strong>Are you sure you want to delete this page?</strong>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="delPage();">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="delPage();">Submit</button>
       </div>
     </div>
   </div>
@@ -168,36 +197,55 @@ $(function () {
       }
     e.stopPropagation();
   });
-  $.each($('div').find('[data-type="cat"]'), function(i) {
-    var opt = $('<option/>')
-                .val($(this).attr('id'))
-                .text($(this).data('label'));
-    $.each($('.selectpicker'), function() {
-      $(this).append(opt);
-    });
+  $.each($('div').find('[data-type="cat"]'), function() {
+    $('#editCatPicker').append(
+      $('<option/>')
+        .val($(this).attr('id'))
+        .text($(this).data('label'))
+    );
+    $('#editPagePicker').append(
+      $('<option/>')
+        .val($(this).attr('id'))
+        .text($(this).data('label'))
+    );
   });
+  $('#editCatPicker').selectpicker('refresh');
+  $('#editPagePicker').selectpicker('refresh');
+  /*
   $.each($('.selectpicker'), function() {
     $(this).selectpicker('refresh');
   });
+  */
+  var editor = ace.edit("editPageEditor");
+  editor.getSession().setMode("ace/mode/html");
+  editor.setOptions({maxLines: 15});
+  editor.$blockScrolling = Infinity;
 });
 $('.modal').on('show.bs.modal', function(e) {
   $(this).data('trigger', $(e.relatedTarget).parent().attr('id'));
 });
 $('#editCatModal').on('show.bs.modal', function(e) {
   var btn_group = $(e.relatedTarget).parent();
-  if (btn_group.attr('id') == '${tree.cat().id()}') {
-    $('#editCatModal .selectpicker').hide();
+  if (btn_group.attr('id') == ${tree.cat().id()}) {
+    $('label[for=editCatPicker]').hide();
+    $('#editCatModal .selectpicker').selectpicker('hide').val('');
   } else {
-    $('#editCatModal .selectpicker').show();
+    $('label[for=editCatPicker]').show();
+    $('.alert-danger').remove();
+    $('#editCatModal .selectpicker').selectpicker('show');
   }
   $('#editCatName').val($(e.relatedTarget).parent().data('name'));
   $('#editCatLabel').val($(e.relatedTarget).parent().data('label'));
+  $('#editCatPicker').val($(e.relatedTarget).parent().parent().parent().parent().find('div').attr('id'));
+  $('#editCatPicker').selectpicker('refresh');
 });
 $('#editPageModal').on('show.bs.modal', function(e) {
+  getPageContent();
   $('#editPageName').val($(e.relatedTarget).parent().data('name'));
   $('#editPageLabel').val($(e.relatedTarget).parent().data('label'));
+  $('#editPagePicker').val($(e.relatedTarget).parent().parent().parent().parent().find('div').attr('id'));
+  $('#editPagePicker').selectpicker('refresh');
 });
-
 
 var addCatURL  = "${context}/api/addcat";
 var delCatURL  = "${context}/api/delcat";
@@ -205,6 +253,7 @@ var editCatURL = "${context}/api/editcat";
 var addPageURL  = "${context}/api/addpage";
 var delPageURL  = "${context}/api/delpage";
 var editPageURL = "${context}/api/editpage";
+var getPageContentURL = "${context}/api/getpagecontent";
 </script>
 
 <%@ include file="footer.jsp" %>

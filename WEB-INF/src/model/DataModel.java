@@ -118,6 +118,28 @@ public class DataModel {
         return count;
     }
 
+    public Page getPageForQuery(String query, List<String> params) throws SQLException {
+        executeQuery(query, params);
+        this.stmt = this.conn.prepareStatement(query);
+        Page pg = null;
+        if (this.rs.isBeforeFirst()) {
+            this.rs.next();
+            pg = new Page(this.rs);
+        }
+        return pg; 
+    }
+
+    public Category getCatForQuery(String query, List<String> params) throws SQLException {
+        executeQuery(query, params);
+        this.stmt = this.conn.prepareStatement(query);
+        Category cat = null;
+        if (this.rs.isBeforeFirst()) {
+            this.rs.next();
+            cat = new Category(this.rs);
+        }
+        return cat; 
+    }
+
     public TreeNode getTree() throws SQLException {
         /* container for Category objects
          * e.g. {Category Id : Category} */

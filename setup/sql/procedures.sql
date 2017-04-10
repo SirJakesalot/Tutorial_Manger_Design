@@ -88,7 +88,7 @@ END //
 DROP PROCEDURE IF EXISTS CountParentId //
 CREATE PROCEDURE CountParentId(IN pid VARCHAR(50))
 BEGIN
-    SELECT COUNT(*)
+    SELECT COUNT(id)
     FROM (SELECT id FROM categories WHERE parent_id=pid
           UNION
           SELECT category_id AS id FROM page_categories WHERE category_id=pid) AS ids;
@@ -98,6 +98,14 @@ DROP PROCEDURE IF EXISTS GetAllCats //
 CREATE PROCEDURE GetAllCats()
 BEGIN
     SELECT * FROM categories;
+END //
+
+DROP PROCEDURE IF EXISTS GetCatByName //
+CREATE PROCEDURE GetCatByName(IN nm VARCHAR(50))
+BEGIN
+    SELECT *
+    FROM categories
+    WHERE name=nm;
 END //
 
 DROP PROCEDURE IF EXISTS CountCatById //
@@ -129,8 +137,8 @@ BEGIN
     DELETE FROM pages WHERE id=pg_id;
 END //
 
-DROP PROCEDURE IF EXISTS UpdateCat //
-CREATE PROCEDURE UpdateCat(
+DROP PROCEDURE IF EXISTS UpdateRootCat //
+CREATE PROCEDURE UpdateRootCat(
     IN cid VARCHAR(50),
     IN nm VARCHAR(50),
     IN lbl VARCHAR(100))
@@ -140,12 +148,40 @@ BEGIN
     WHERE id=cid;
 END //
 
+DROP PROCEDURE IF EXISTS UpdateSubcat //
+CREATE PROCEDURE UpdateSubcat(
+    IN cid VARCHAR(50),
+    IN nm VARCHAR(50),
+    IN lbl VARCHAR(100),
+    IN pid VARCHAR(50))
+BEGIN
+    UPDATE categories
+    SET name=nm, label=lbl, parent_id=pid
+    WHERE id=cid;
+END //
+
 DROP PROCEDURE IF EXISTS GetAllPages //
 CREATE PROCEDURE GetAllPages()
 BEGIN
     SELECT id, pc.category_id AS category_id, name, label
     FROM pages LEFT JOIN (SELECT * FROM page_categories) AS pc
     ON id=pc.page_id;
+END //
+
+DROP PROCEDURE IF EXISTS GetPageByName //
+CREATE PROCEDURE GetPageByName(IN nm VARCHAR(50))
+BEGIN
+    SELECT *
+    FROM pages
+    WHERE name=nm;
+END //
+
+DROP PROCEDURE IF EXISTS GetPageById //
+CREATE PROCEDURE GetPageById(IN pid VARCHAR(50))
+BEGIN
+    SELECT *
+    FROM pages
+    WHERE id=pid;
 END //
 
 DROP PROCEDURE IF EXISTS InsertPage //
@@ -162,11 +198,16 @@ DROP PROCEDURE IF EXISTS UpdatePage //
 CREATE PROCEDURE UpdatePage(
     IN pid VARCHAR(50),
     IN nm VARCHAR(50),
-    IN lbl VARCHAR(100))
+    IN lbl VARCHAR(100),
+    IN cntnt TEXT,
+    IN parent_id VARCHAR(50))
 BEGIN
     UPDATE pages
-    SET name=nm, label=lbl
+    SET name=nm, label=lbl, content=cntnt
     WHERE id=pid;
+    UPDATE page_categories
+    SET category_id=parent_id
+    WHERE page_id=pid;
 END //
 
 DROP PROCEDURE IF EXISTS DeletePage //

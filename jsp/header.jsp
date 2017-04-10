@@ -18,24 +18,28 @@
   <!-- The above 3 meta tags must come first in the head; any other head content must come *after* these tags -->
 
   <!-- JAVASCRIPT LIBRARIES -->
-  <!-- jquery -->
-  <script src="vendors/jquery/jquery.min.js"></script>
-  <!-- bootstrap -->
-  <script src="vendors/bootstrap/bootstrap-dist.min.js"></script>
-  <!-- local datasource -->
-  <script src="js/manage-files.js"></script>
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="vendors/bootstrap-select/bootstrap-select.js"></script>
-
-  <link rel="stylesheet" href="css/style.css">
+  <!-- Jquery -->
+  <script src="${context}/vendors/jquery/jquery.min.js"></script>
+  <!-- BOotstrap -->
+  <script src="${context}/vendors/bootstrap/bootstrap-dist.min.js"></script>
+  <!-- Latest compiled and Minified JavaScript -->
+  <script src="${context}/vendors/bootstrap-select/bootstrap-select.js"></script>
+  <!-- Ace Editor -->
+  <script src="${context}/vendors/ace/ace.js"></script>
+  <!-- Google Prettify -->
+  <script src="${context}/vendors/code-prettify/loader/run_prettify.js"></script>
 
   <!-- CSS LIBRARIES -->
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="vendors/bootstrap/bootstrap-dist.min.css">
-  <link rel="stylesheet" href="vendors/bootstrap/bootstrap-theme.min.css">
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="vendors/bootstrap-select/bootstrap-select.css">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="${context}/vendors/bootstrap/bootstrap-dist.min.css">
+  <!-- Bootstrap Theme -->
+  <link rel="stylesheet" href="${context}/vendors/bootstrap/bootstrap-theme.min.css">
+  <!-- Google Prettify Theme -->
+  <link rel="stylesheet" href="css/prettyprint_theme.css">
+  <!-- Tree Manager -->
+  <link rel="stylesheet" href="css/tree-manager.css">
+  <!-- Bootstrap SelectPicker -->
+  <link rel="stylesheet" href="${context}/vendors/bootstrap-select/bootstrap-select.css">
 
   <title>${title}</title>
 </head>
@@ -43,6 +47,7 @@
 <!-- USEFUL LINKS -->
 <!-- http://stackoverflow.com/questions/17386993/twitters-bootstrap-dropdowns-with-click-event -->
 <!-- http://www.roytuts.com/infinite-dynamic-multi-level-nested-category-with-php-and-mysql/ -->
+
 <body>
   <div class="container">
     <nav class="navbar navbar-default">
@@ -67,10 +72,10 @@
 
                 <c:forEach var="node" items="${tree.children()}">
                   <c:if test="${node.cat() != null}">
-                    <h6 class="dropdown-header"><a href="${context}/${node.cat().name()}">${node.cat().label()}</a></h6>
+                    <h6 class="dropdown-header"><a href="${context}/${node.cat().name()}.html">${node.cat().label()}</a></h6>
                     <c:forEach var="child" items="${node.children()}">
                       <c:if test="${child.cat() != null}">
-                        <li><a href="${context}/${child.cat().name()}">${child.cat().label()}</a></li>
+                        <li><a href="${context}/${child.cat().name()}.html">${child.cat().label()}</a></li>
                       </c:if>
                     </c:forEach>
                     <li role="separator" class="divider"></li>
@@ -78,10 +83,11 @@
                 </c:forEach>
               </ul>
             </li>
-            <li><a href="${context}/manage-pages">Manage Tutorial Files</a></li>
+            <li><a href="${context}/settings">Settings</a></li>
+            <li><a href="${context}/manage-pages">Manage Page Files</a></li>
           </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+        </div> <!-- /.navbar-collapse -->
+      </div> <!-- /.container-fluid -->
     </nav>
     <div class="container-fluid">
       <div class="row">

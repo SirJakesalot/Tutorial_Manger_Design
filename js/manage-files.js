@@ -1,3 +1,14 @@
+function addNode() {
+    var key = $('#addNodeTabs li.active').text();
+    if (key == 'Add Category') {
+        addCat();
+    } else if (key == 'Add Page') {
+        addPage();
+    } else {
+        console.log('Unknown key for addNode!');
+    }
+}
+
 function addCat() {
     var parent_id = $('#addNodeModal').data('trigger');
     var name = $("#addCatName").val();
@@ -29,10 +40,13 @@ function delCat() {
 }
 
 function editCat() {
-    var parent_id = $('#editCatPicker').val();
     var id = $('#editCatModal').data('trigger');
     var name = $("#editCatName").val();
     var label = $("#editCatLabel").val();
+    var parent_id = $('#editCatPicker').val();
+    if (parent_id == null) {
+      parent_id = 'null';
+    }
     var params = {id: id, name: name, label: label, parent_id: parent_id};
     console.log(JSON.stringify(params));
     var request = $.ajax({
@@ -65,7 +79,9 @@ function editPage() {
     var id = $('#editPageModal').data('trigger');
     var name = $("#editPageName").val();
     var label = $("#editPageLabel").val();
-    var params = {id: id, name: name, label: label};
+    var content = ace.edit("editPageEditor").getSession().getValue();
+    var parent_id = $('#editPagePicker').val();
+    var params = {id: id, name: name, label: label, content: content, parent_id: parent_id};
     console.log(JSON.stringify(params));
     var request = $.ajax({
       url: editPageURL,
@@ -91,9 +107,34 @@ function delPage() {
     request.done(handleResponse);
 }
 
+function getPageContent() {
+    var id = $('#editPageModal').data('trigger');
+    var params = {id: id};
+    console.log(JSON.stringify(params));
+    var request = $.ajax({
+      url: getPageContentURL,
+      type: "post",
+      data: params,
+      datatype: "json",
+      contenttype: "application/x-www-form-urlencoded; charset=utf-8"
+    });
+    request.done(handleGetPageContentResponse);
+}
+
 function handleResponse(response) {
     console.log(JSON.stringify(response));
     if (response.success != undefined) {
-        $('.modal').modal('hide');
+        location.reload();
+        //$('.modal').modal('hide');
+    } else if (response.error != undefined) {
+        $('.modal-body').prepend($('<div/>').addClass('alert').addClass('alert-danger').text(response.error));
+    }
+}
+function handleGetPageContentResponse(response) {
+    console.log(JSON.stringify(response));
+    if (response.content != undefined) {
+        ace.edit("editPageEditor").getSession().setValue(response.content);
+    } else if (response.error != undefined) {
+        $('.modal-body').prepend($('<div/>').addClass('alert').addClass('alert-danger').text(response.error));
     }
 }

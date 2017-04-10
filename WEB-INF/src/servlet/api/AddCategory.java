@@ -3,6 +3,7 @@ package pageDB_api;
 import pageDB_model.DataModel;
 import pageDB_model.Category;
 import pageDB_model.PageDBServlet;
+import pageDB_model.PageDBServletException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -90,6 +91,10 @@ public class AddCategory extends PageDBServlet {
             this.dm = new DataModel();
             output = this.checkPageDB(dm, reqParams);
 
+        } catch(PageDBServletException e) {
+            String trace = ExceptionUtils.getStackTrace(e);
+            System.out.println("Error AddCategory\n" + trace);
+            output.put("error", e.getMessage());
         } catch(Exception e) {
             String trace = ExceptionUtils.getStackTrace(e);
             System.out.println("Error AddCategory\n" + trace);

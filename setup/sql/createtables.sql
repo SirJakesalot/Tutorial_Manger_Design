@@ -35,7 +35,8 @@ DROP TABLE IF EXISTS pages;
 CREATE TABLE IF NOT EXISTS pages (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    label VARCHAR(100) NOT NULL
+    label VARCHAR(100) NOT NULL,
+    content TEXT default NULL
 ) ENGINE=InnoDB;
 
 INSERT INTO pages(name,label) VALUES('quicksort', 'Quicksort'),
@@ -65,9 +66,3 @@ GRANT ALL ON pageDB.* TO 'pageDB_admin'@'localhost';
 DROP USER IF EXISTS 'pageDB_user'@'localhost';
 CREATE USER 'pageDB_user'@'localhost';
 GRANT SELECT ON pageDB.* TO 'pageDB_user'@'localhost';
-
-
-/*GRANT EXECUTE ON PROCEDURE tutorialdb.GetTop2Lvls TO 'tutorialdb_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE tutorialdb.GetCatsFor1Lvl TO 'tutorialdb_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE tutorialdb.GetCatsFor2Lvls TO 'tutorialdb_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE tutorialdb.GetTutsFor3Lvls TO 'tutorialdb_user'@'localhost';*/
