@@ -4,6 +4,7 @@
 
 <%@ page session="true" %>
 <%@ page isELIgnored="false" %>
+<%@ page import="pageDB_model.Settings"%>
 <%@ page import="pageDB_model.Category"%>
 <%@ page import="pageDB_model.Page"%>
 <%@ page import="pageDB_model.TreeNode"%>
@@ -20,7 +21,7 @@
   <!-- JAVASCRIPT LIBRARIES -->
   <!-- Jquery -->
   <script src="${context}/vendors/jquery/jquery.min.js"></script>
-  <!-- BOotstrap -->
+  <!-- Bootstrap -->
   <script src="${context}/vendors/bootstrap/bootstrap-dist.min.js"></script>
   <!-- Latest compiled and Minified JavaScript -->
   <script src="${context}/vendors/bootstrap-select/bootstrap-select.js"></script>
@@ -28,6 +29,10 @@
   <script src="${context}/vendors/ace/ace.js"></script>
   <!-- Google Prettify -->
   <script src="${context}/vendors/code-prettify/loader/run_prettify.js"></script>
+  <!-- Tree Manager -->
+  <script src="${context}/js/manage-files.js"></script>
+  <!-- Bootstrap Validator -->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
 
   <!-- CSS LIBRARIES -->
   <!-- Bootstrap -->
@@ -42,6 +47,7 @@
   <link rel="stylesheet" href="${context}/vendors/bootstrap-select/bootstrap-select.css">
 
   <title>${title}</title>
+  ${settings.head_snippet()}
 </head>
 
 <!-- USEFUL LINKS -->
@@ -60,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="${context}">Jake's Tutorials</a>
+          <a class="navbar-brand" href="${context}">${settings.site_label()}</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -83,8 +89,13 @@
                 </c:forEach>
               </ul>
             </li>
-            <li><a href="${context}/settings">Settings</a></li>
-            <li><a href="${context}/manage-pages">Manage Page Files</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Actions<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" >
+                  <li><a href="${context}/settings">Settings</a></li>
+                  <li><a href="${context}/manage-pages">Manage Pages</a></li>
+                </ul>
+            </li>
           </ul>
         </div> <!-- /.navbar-collapse -->
       </div> <!-- /.container-fluid -->

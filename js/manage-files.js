@@ -121,11 +121,30 @@ function getPageContent() {
     request.done(handleGetPageContentResponse);
 }
 
+function editSettings() {
+    var site_label = $("#siteLabel").val();
+    var main_page_content = ace.edit("mainPageContent").getSession().getValue();
+    var head_snippet = ace.edit("headSnippet").getSession().getValue();
+    var foot_snippet = ace.edit("footSnippet").getSession().getValue();
+    var params = {site_label: site_label,
+                  main_page_content: main_page_content,
+                  head_snippet: head_snippet,
+                  foot_snippet: foot_snippet}
+    console.log(JSON.stringify(params));
+    var request = $.ajax({
+      url: editSettingsURL,
+      type: "post",
+      data: params,
+      datatype: "json",
+      contenttype: "application/x-www-form-urlencoded; charset=utf-8"
+    });
+    request.done(handleResponse);
+}
+
 function handleResponse(response) {
     console.log(JSON.stringify(response));
     if (response.success != undefined) {
         location.reload();
-        //$('.modal').modal('hide');
     } else if (response.error != undefined) {
         $('.modal-body').prepend($('<div/>').addClass('alert').addClass('alert-danger').text(response.error));
     }

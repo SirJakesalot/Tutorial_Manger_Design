@@ -1,6 +1,7 @@
 package pageDB_pages;
 
 import pageDB_model.DataModel;
+import pageDB_model.Settings;
 import pageDB_model.TreeNode;
 
 import java.io.IOException;
@@ -22,7 +23,9 @@ public class ManagePagesPage extends HttpServlet {
         try {
             dm = new DataModel();
             TreeNode tree = dm.getTree();
+            Settings settings = dm.getSettings();
             request.setAttribute("title", "Manage Pages");
+            request.setAttribute("settings", settings);
             request.setAttribute("tree", tree);
         } catch (Exception e) {
             DataModel.log("MainPage doGet", e);

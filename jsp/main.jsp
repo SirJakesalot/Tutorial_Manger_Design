@@ -1,3 +1,3 @@
 <%@ include file="header.jsp" %>
-<h1 class="c-text">Welcome</h1>
+${settings.main_page_content()}
 <%@ include file="footer.jsp" %>

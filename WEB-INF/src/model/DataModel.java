@@ -118,9 +118,18 @@ public class DataModel {
         return count;
     }
 
+    public Settings getSettings() throws SQLException {
+        executeQuery("CALL getSettings", null);
+        Settings settings = null;
+        if (this.rs.isBeforeFirst()) {
+            this.rs.next();
+            settings = new Settings(this.rs);
+        }
+        return settings; 
+    }
+    
     public Page getPageForQuery(String query, List<String> params) throws SQLException {
         executeQuery(query, params);
-        this.stmt = this.conn.prepareStatement(query);
         Page pg = null;
         if (this.rs.isBeforeFirst()) {
             this.rs.next();
@@ -131,7 +140,6 @@ public class DataModel {
 
     public Category getCatForQuery(String query, List<String> params) throws SQLException {
         executeQuery(query, params);
-        this.stmt = this.conn.prepareStatement(query);
         Category cat = null;
         if (this.rs.isBeforeFirst()) {
             this.rs.next();

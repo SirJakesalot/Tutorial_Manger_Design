@@ -1,6 +1,26 @@
 USE pageDB
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS GetSettings //
+CREATE PROCEDURE GetSettings()
+BEGIN
+    SELECT * FROM settings;
+END //
+
+DROP PROCEDURE IF EXISTS UpdateSettings //
+CREATE PROCEDURE UpdateSettings(
+    IN lbl VARCHAR(50),
+    IN main_pg_content TEXT,
+    IN head_snip TEXT,
+    IN foot_snip TEXT)
+BEGIN
+    UPDATE settings
+    SET site_label=lbl,
+        main_page_content=main_pg_content,
+        head_snippet=head_snip,
+        foot_snippet=foot_snip;
+END //
+
 DROP PROCEDURE IF EXISTS CountName //
 CREATE PROCEDURE CountName(IN nm VARCHAR(50))
 BEGIN

@@ -1,6 +1,7 @@
 package pageDB_pages;
 
 import pageDB_model.DataModel;
+import pageDB_model.Settings;
 import pageDB_model.TreeNode;
 import pageDB_model.Category;
 import pageDB_model.Page;
@@ -68,28 +69,41 @@ public class PageContent extends HttpServlet {
         try {
             dm = new DataModel();
             TreeNode tree = dm.getTree();
+            Settings settings = dm.getSettings();
 
+            /* TODO: change page name schema */
             String name = request.getServletPath();
             name = name.substring(1, name.length() - 5);
             List<String> params = new ArrayList<String>();
             params.add(name);
 
-            Page pg = dm.getPageForQuery("CALL GetPageByName(?);", params);
-            if (pg != null) {
-                request.setAttribute("page", pg);
+            Page pg = null;
+            Category cat = null;
+            pg = dm.getPageForQuery("CALL GetPageByName(?);", params);
+            if (pg == null) {
+                cat = dm.getCatForQuery("CALL GetCatByName(?);", params);
+            }
+            if (pg == null && cat == null) {
+                request.setAttribute("title", "Unknown Page");
+                request.setAttribute("error", "The Page \"" + name + "\" was not found!");
             } else {
-                Category cat = dm.getCatForQuery("CALL GetCatByName(?);", params);
-                List<TreeNode> children = getCatChildren(tree, cat.id());
-                request.setAttribute("category", cat);
-                request.setAttribute("children", children);
+                if (pg != null) {
+                    request.setAttribute("title", pg.label());
+                    request.setAttribute("page", pg);
+                } else {
+                    List<TreeNode> children = getCatChildren(tree, cat.id());
+                    request.setAttribute("title", cat.label());
+                    request.setAttribute("category", cat);
+                    request.setAttribute("children", children);
+                }
+
+                List<TreeNode> crumbs = new ArrayList<TreeNode>();
+                getCrumbs(tree, name, crumbs);
+                request.setAttribute("crumbs", crumbs);
             }
 
-            List<TreeNode> crumbs = new ArrayList<TreeNode>();
-            getCrumbs(tree, name, crumbs);
-
-            request.setAttribute("title", "Tutorial Page");
-            request.setAttribute("crumbs", crumbs);
             request.setAttribute("tree", tree);
+            request.setAttribute("settings", settings);
         } catch (Exception e) {
             DataModel.log("PageContent doGet", e);
             request.setAttribute("error", "PageContent error");

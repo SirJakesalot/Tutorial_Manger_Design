@@ -25,7 +25,7 @@
 
 
 <div id="addNodeModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -40,32 +40,50 @@
           <div class="tab-content">
             <div class="tab-pane active" id="addPage">
               <br>
-              <div class="form-group">
-                <label for="addPageName">Page Name</label>
-                <input id="addPageName" type="text" class="form-control" placeholder="New Page Name"/>
-              </div>
-              <div class="form-group">
-                <label for="addPageLabel">Page Label</label>
-                <input id="addPageLabel" type="text" class="form-control" placeholder="New Page Label"/>
-              </div>
+
+              <form id="addPageForm">
+                <div class="form-group">
+                  <label for="addPageName">Page Name</label>
+                  <input id="addPageName" name="name" type="text" class="form-control" placeholder="New Page Name" maxlength="50"/>
+                </div>
+                <div class="form-group">
+                  <label for="addPageLabel">Page Label</label>
+                  <input id="addPageLabel" name="label" type="text" class="form-control" placeholder="New Page Label" maxlength="100"/>
+                </div>
+                <div class="form-group">
+                  <div id="addPageFormMessages"></div>
+                </div>
+                <div style="text-align: right;">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-success" disabled>Add Page</button>
+                </div>
+              </form>
             </div>
+
             <div class="tab-pane" id="addCat">
               <br>
-              <div class="form-group">
-                <label for="addCatName">Category Name</label>
-                <input id="addCatName" type="text" class="form-control" placeholder="New Category Name"/>
-              </div>
-              <div class="form-group">
-                <label for="addCatLabel">Category Label</label>
-                <input id="addCatLabel" type="text" class="form-control" placeholder="New Category Label"/>
-              </div>
+
+              <form id="addCatForm">
+                <div class="form-group">
+                  <label for="addCatName">Category Name</label>
+                  <input id="addCatName" name="name" type="text" class="form-control" placeholder="New Category Name" maxlength="50"/>
+                </div>
+                <div class="form-group">
+                  <label for="addCatLabel">Category Label</label>
+                  <input id="addCatLabel" name="label" type="text" class="form-control" placeholder="New Category Label" maxlength="100"/>
+                </div>
+                <div class="form-group">
+                  <div id="addCatFormMessages"></div>
+                </div>
+                <div style="text-align: right;">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-success" disabled>Add Category</button>
+                </div>
+              </form>
+
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" onclick="addNode();">Add</button>
       </div>
     </div>
   </div>
@@ -80,22 +98,24 @@
         <h4 class="modal-title">Edit Category</h4>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label for="editCatPicker">Parent Category</label></br>
-          <select id="editCatPicker" data-live-search="true" data-live-search-style="contains" class="selectpicker"></select>
-        </div>
-        <div class="form-group">
-          <label for="editCatName">Category Name</label>
-          <input id="editCatName" type="text" class="form-control" placeholder="New Category Name"/>
-        </div>
-        <div class="form-group">
-          <label for="editCatLabel">Category Label</label>
-          <input id="editCatLabel" type="text" class="form-control" placeholder="New Category Label"/>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="editCat();">Save</button>
+        <form id="editCatForm">
+          <div class="form-group">
+            <label for="editCatPicker">Parent Category</label></br>
+            <select id="editCatPicker" data-live-search="true" data-live-search-style="contains" class="selectpicker"></select>
+          </div>
+          <div class="form-group">
+            <label for="editCatName">Category Name</label>
+            <input id="editCatName" name="name" type="text" class="form-control" placeholder="New Category Name"/>
+          </div>
+          <div class="form-group">
+            <label for="editCatLabel">Category Label</label>
+            <input id="editCatLabel" name="label" type="text" class="form-control" placeholder="New Category Label"/>
+          </div>
+          <div style="text-align: right;">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" disabled>Save</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -224,6 +244,9 @@ $(function () {
 $('.modal').on('show.bs.modal', function(e) {
   $(this).data('trigger', $(e.relatedTarget).parent().attr('id'));
 });
+$('.modal').on('hidden.bs.modal', function(e) {
+  $('.alert-danger').remove();
+});
 $('#editCatModal').on('show.bs.modal', function(e) {
   var btn_group = $(e.relatedTarget).parent();
   if (btn_group.attr('id') == ${tree.cat().id()}) {
@@ -231,7 +254,6 @@ $('#editCatModal').on('show.bs.modal', function(e) {
     $('#editCatModal .selectpicker').selectpicker('hide').val('');
   } else {
     $('label[for=editCatPicker]').show();
-    $('.alert-danger').remove();
     $('#editCatModal .selectpicker').selectpicker('show');
   }
   $('#editCatName').val($(e.relatedTarget).parent().data('name'));
@@ -254,6 +276,117 @@ var addPageURL  = "${context}/api/addpage";
 var delPageURL  = "${context}/api/delpage";
 var editPageURL = "${context}/api/editpage";
 var getPageContentURL = "${context}/api/getpagecontent";
+</script>
+
+<script>
+$('#addPageForm').bootstrapValidator({
+  framework: 'bootstrap',
+  container: '#addPageFormMessages',
+  feedbackIcons: {
+    valid: 'glyphicon glyphicon-ok',
+    invalid: 'glyphicon glyphicon-remove',
+    validating: 'glyphicon glyphicon-refresh'
+  },
+  fields: {
+    name: {
+      validators: {
+        notEmpty: {message: 'Page Name cannot be empty' },
+        regexp: {
+          regexp:/^[a-z0-9_-]+$/,
+          message: 'Page Name must consist of lowercase letters, numbers, underscores, and dashes'
+        }
+      }
+    },
+    label: {
+      validators: {
+        notEmpty: {message: 'Page Label cannot be empty' }
+      }
+    }
+  }
+}).on('success.field.bv', function(e, data) {
+  if (data.bv.getInvalidFields().length > 0) {
+    data.bv.disableSubmitButtons(true);
+  }
+}).submit(function(e) {
+  if (!e.isDefaultPrevented()) {
+    e.preventDefault();
+    addPage();
+  }
+});
+</script>
+
+<script>
+$('#addCatForm').bootstrapValidator({
+  framework: 'bootstrap',
+  container: '#addCatFormMessages',
+  feedbackIcons: {
+    valid: 'glyphicon glyphicon-ok',
+    invalid: 'glyphicon glyphicon-remove',
+    validating: 'glyphicon glyphicon-refresh'
+  },
+  fields: {
+    name: {
+      validators: {
+        notEmpty: {message: 'Category Name cannot be empty' },
+        regexp: {
+          regexp:/^[a-z0-9_-]+$/,
+          message: 'Category Name must consist of lowercase letters, numbers, underscores, and dashes'
+        }
+      }
+    },
+    label: {
+      validators: {
+        notEmpty: {message: 'Category Label cannot be empty' }
+      }
+    }
+  }
+}).on('success.field.bv', function(e, data) {
+  if (data.bv.getInvalidFields().length > 0) {
+    data.bv.disableSubmitButtons(true);
+  }
+}).submit(function(e) {
+  if (!e.isDefaultPrevented()) {
+    e.preventDefault();
+    addCategory();
+  }
+});
+</script>
+
+<script>
+$('#editCatForm').bootstrapValidator({
+  framework: 'bootstrap',
+  container: '#editCatFormMessages',
+  feedbackIcons: {
+    valid: 'glyphicon glyphicon-ok',
+    invalid: 'glyphicon glyphicon-remove',
+    validating: 'glyphicon glyphicon-refresh'
+  },
+  fields: {
+    name: {
+      validators: {
+        notEmpty: {message: 'Category Name cannot be empty' },
+        regexp: {
+          regexp:/^[a-z0-9_-]+$/,
+          message: 'Category Name must consist of lowercase letters, numbers, underscores, and dashes'
+        }
+      }
+    },
+    label: {
+      validators: {
+        notEmpty: {message: 'Category Label cannot be empty' }
+      }
+    }
+  }
+}).on('success.field.bv', function(e, data) {
+  if (data.bv.getInvalidFields().length > 0) {
+    data.bv.disableSubmitButtons(true);
+  }
+}).submit(function(e) {
+  if (!e.isDefaultPrevented()) {
+    e.preventDefault();
+    editCategory();
+  }
+});
 </script>
 
 <%@ include file="footer.jsp" %>

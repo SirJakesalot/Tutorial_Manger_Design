@@ -69,7 +69,6 @@ public class EditCategory extends PageDBServlet {
         }
 
         /* Ensure parent_id exists */
-        System.out.println("type: " + pid.getClass().getName() + ", val: " + pid);
         if (!pid.equals("null")) {
             params = new ArrayList<String>();
             params.add(pid);
